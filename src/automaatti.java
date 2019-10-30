@@ -1,7 +1,7 @@
 
 public class automaatti {
 	
-	//luodaan muuttujat juomien m‰‰rille
+	// luodaan muuttujat juomien m‰‰rille
 	private int kahvi;
 	private int tee;
 	private int kaakao;
@@ -12,7 +12,8 @@ public class automaatti {
 		this.kaakao = 19;
 	}
 	
-	//generoidaan setterit ja getterit
+	// generoidaan setterit ja getterit
+	// if lauseet koska haluttiin m‰‰r‰t nollaan jos ne olivat alle 10
 	public int getKahvi() {
 		if (kahvi < 10) {
 			return 0;
@@ -45,8 +46,7 @@ public class automaatti {
 	// luodaan metodit juomien valmistamiselle
 	// j‰tet‰‰n systemoutprintit jotta voidaan tarkistaa metodien toiminta
 	public void valmistaKahvi() {
-		if (kahvi < 10) {
-			this.kahvi = 0; // jotta raaka-aineen m‰‰r‰ ei mene alle 0
+		if (this.kahvi < 10) {
 			System.out.println("Kahvia ei ole en‰‰ j‰ljell‰! Ole hyv‰ ja t‰yt‰ s‰iliˆ.");
 		} else {
 			this.kahvi -= 10;
@@ -56,7 +56,6 @@ public class automaatti {
 
 	public void valmistaTee() {
 		if (this.tee < 10) {
-			this.tee = 0; // jotta raaka-aineen m‰‰r‰ ei mene alle 0
 			System.out.println("Teet‰ ei ole en‰‰ j‰ljell‰! Ole hyv‰ ja t‰yt‰ s‰iliˆ.");
 		} else {
 			this.tee -= 10;
@@ -66,7 +65,6 @@ public class automaatti {
 
 	public void valmistaKaakao() {
 		if (this.kaakao < 10) {
-			this.kaakao = 0; // jotta raaka-aineen m‰‰r‰ ei mene alle 0
 			System.out.println("Kaakaota ei ole en‰‰ j‰ljell‰! Ole hyv‰ ja t‰yt‰ s‰iliˆ.");
 		} else {
 			this.kaakao -= 10;

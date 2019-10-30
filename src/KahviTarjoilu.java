@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Image;
 
@@ -66,5 +68,14 @@ public class KahviTarjoilu extends JFrame {
 		lblOleHyva.setFont(new Font("Ravie", Font.PLAIN, 13));
 		contentPane.add(lblOleHyva, BorderLayout.SOUTH);
 	}
+	
+	//luodaan olio juoman tarjoilulle jossa
+	// tarjoillaan juoma tai ilmoitetaan sen loppuneen
+	public void tarjoaKahvi(automaatti ja, KahviTarjoilu kt) {
+		if (ja.getKahvi() < 10) {
+			JOptionPane.showMessageDialog(null, "Raaka-aine loppu. Täytä säiliö!", "Virhe!", JOptionPane.ERROR_MESSAGE);
+		} else {
+			kt.setVisible(true);
+	}}
 
 }

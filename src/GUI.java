@@ -53,6 +53,7 @@ public class GUI extends JFrame {
 	KahviTarjoilu kt = new KahviTarjoilu();
 	TeeTarjoilu tt = new TeeTarjoilu();
 	KaakaoTarjoilu ct = new KaakaoTarjoilu();
+	Ohje ohje = new Ohje();
 
 	/**
 	 * Launch the application.
@@ -94,13 +95,7 @@ public class GUI extends JFrame {
 				// asetetaan uusi arvo automaattiin
 				ja.setKahvi(uusiKahvi);
 				// p‰ivitet‰‰n labelissa n‰kyv‰ m‰‰r‰
-				lblKahviMaara.setText("Kahvi: " + ja.getKahvi());
-				// tekstin v‰rin muuttaminen
-				if (ja.getKahvi() <= 20) {
-					lblKahviMaara.setForeground(Color.RED);
-				} else {
-					lblKahviMaara.setForeground(Color.BLACK);
-				}
+				paivitaKahvi(ja);
 			}
 		});
 		mnYllapito.add(mntmAsetaKahvi);
@@ -113,13 +108,7 @@ public class GUI extends JFrame {
 				// asetetaan uusi arvo automaattiin
 				ja.setTee(uusiTee);
 				// p‰ivitet‰‰n labelissa n‰kyv‰ m‰‰r‰
-				lblTeeMaara.setText("Tee: " + ja.getTee());
-				// tekstin v‰rin muuttaminen
-				if (ja.getTee() <= 20) {
-					lblTeeMaara.setForeground(Color.RED);
-				} else {
-					lblTeeMaara.setForeground(Color.BLACK);
-				}
+				paivitaTee(ja);
 			}
 		});
 		mnYllapito.add(mntmAsetaTee);
@@ -132,13 +121,7 @@ public class GUI extends JFrame {
 				// asetetaan uusi arvo automaattiin
 				ja.setKaakao(uusiKaakao);
 				// p‰ivitet‰‰n labelissa n‰kyv‰ m‰‰r‰
-				lblKaakaoMaara.setText("Kaakao: " + ja.getKaakao());
-				// tekstin v‰rin muuttaminen
-				if (ja.getKaakao() <= 20) {
-					lblKaakaoMaara.setForeground(Color.RED);
-				} else {
-					lblKaakaoMaara.setForeground(Color.BLACK);
-				}
+				paivitaKaakao(ja);
 			}
 		});
 		mnYllapito.add(mntmAsetaKaakao);
@@ -161,8 +144,17 @@ public class GUI extends JFrame {
 		mntmLataa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					//ladataan tila
+					// ladataan tila
 					automaatti uusi = Sarjallistamista.lueTiedostosta();
+					// asetetaan luetut arvot guihin
+					ja.setKahvi(uusi.getKahvi());
+					ja.setTee(uusi.getTee());
+					ja.setKaakao(uusi.getKaakao());
+					
+					// p‰ivitet‰‰n labelit n‰ytt‰m‰‰n oikea m‰‰r‰
+					paivitaKahvi(ja);
+					paivitaTee(ja);
+					paivitaKaakao(ja);
 				} catch (FileNotFoundException e1) {
 					// latauksen virheilmoitus
 					JOptionPane.showMessageDialog(contentPane, "Lataus ep‰onnistui", "Error", JOptionPane.ERROR_MESSAGE);
@@ -191,6 +183,11 @@ public class GUI extends JFrame {
 		mnTietoja.add(mntmVersio);
 
 		mntmOhje = new JMenuItem("Ohje");
+		mntmOhje.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ohje.setVisible(true);
+			}
+		});
 		mnTietoja.add(mntmOhje);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -205,20 +202,9 @@ public class GUI extends JFrame {
 		btnKahvi = new JButton("");
 		btnKahvi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// tarjoillaan juoma tai ilmoitetaan sen loppuneen
-				if (ja.getKahvi() < 10) {
-					JOptionPane.showMessageDialog(null, "Raaka-aine loppu. T‰yt‰ s‰iliˆ!", "Virhe!",
-							JOptionPane.ERROR_MESSAGE);
-				} else {
-					kt.setVisible(true);
-				}
+				kt.tarjoaKahvi(ja, kt);
 				ja.valmistaKahvi();
-				// vaihdetaan n‰ytett‰v‰ raaka-aineen m‰‰r‰
-				lblKahviMaara.setText("Kahvi: " + ja.getKahvi());
-				// jos raaka-aine alhainen vaihdetaan v‰ri
-				if (ja.getKahvi() <= 20) {
-					lblKahviMaara.setForeground(Color.RED);
-				}
+				paivitaKahvi(ja);
 			}
 		});
 		GridBagConstraints gbc_btnKahvi = new GridBagConstraints();
@@ -234,21 +220,10 @@ public class GUI extends JFrame {
 		btnTee = new JButton("");
 		btnTee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// tarjoillaan juoma tai ilmoitetaan sen loppuneen
-				if (ja.getTee() < 10) {
-					JOptionPane.showMessageDialog(null, "Raaka-aine loppu. T‰yt‰ s‰iliˆ!", "Virhe!",
-							JOptionPane.ERROR_MESSAGE);
-				} else {
-					tt.setVisible(true);
-				}
+				tt.tarjoaTee(ja, tt);
 				ja.valmistaTee();
-				// p‰ivitet‰‰n raaka-aineen m‰‰r‰
-				lblTeeMaara.setText("Tee :" + ja.getTee());
-				// jos raaka-aine alhainen vaihdetaan v‰ri
-				if (ja.getTee() <= 20) {
-					lblTeeMaara.setForeground(Color.RED);
+				paivitaTee(ja);
 				}
-			}
 		});
 		GridBagConstraints gbc_btnTee = new GridBagConstraints();
 		gbc_btnTee.anchor = GridBagConstraints.NORTHWEST;
@@ -263,20 +238,9 @@ public class GUI extends JFrame {
 		btnKaakao = new JButton("");
 		btnKaakao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// tarjoillaan juoma tai ilmoitetaan sen loppuneen
-				if (ja.getKaakao() < 10) {
-					JOptionPane.showMessageDialog(null, "Raaka-aine loppu. T‰yt‰ s‰iliˆ!", "Virhe!",
-							JOptionPane.ERROR_MESSAGE);
-				} else {
-					ct.setVisible(true);
-				}
+				ct.tarjoaKaakao(ja, ct);
 				ja.valmistaKaakao();
-				// p‰ivitet‰‰n raaka-aineen m‰‰r‰
-				lblKaakaoMaara.setText("Kaakao :" + ja.getKaakao());
-				// vaihdetaan v‰ri jos raaka-aineen m‰‰r‰ alhainen
-				if (ja.getKaakao() <= 20) {
-					lblKaakaoMaara.setForeground(Color.RED);
-				}
+				paivitaKaakao(ja);
 			}
 		});
 		GridBagConstraints gbc_btnKaakao = new GridBagConstraints();
@@ -320,10 +284,7 @@ public class GUI extends JFrame {
 		gbc_lblKahviMaara.gridx = 1;
 		gbc_lblKahviMaara.gridy = 5;
 		contentPane.add(lblKahviMaara, gbc_lblKahviMaara);
-		// lis‰t‰‰n if lause t‰h‰n jos alkuarvo on liian alhainen, vaihdetaan v‰ri
-		if (ja.getKahvi() <= 20) {
-			lblTeeMaara.setForeground(Color.RED);
-		}
+		paivitaKahvi(ja);
 
 		lblTeeMaara = new JLabel("Tee: " + ja.getTee());
 		lblTeeMaara.setFont(new Font("Ravie", Font.PLAIN, 12));
@@ -332,10 +293,7 @@ public class GUI extends JFrame {
 		gbc_lblTeeMaara.gridx = 2;
 		gbc_lblTeeMaara.gridy = 5;
 		contentPane.add(lblTeeMaara, gbc_lblTeeMaara);
-		// lis‰t‰‰n if lause t‰h‰nkin jos alkuarvo on liian alhainen, vaihdetaan v‰ri
-		if (ja.getTee() <= 20) {
-			lblTeeMaara.setForeground(Color.RED);
-		}
+		paivitaTee(ja);
 
 		lblKaakaoMaara = new JLabel("Kaakao: " + ja.getKaakao());
 		lblKaakaoMaara.setFont(new Font("Ravie", Font.PLAIN, 12));
@@ -345,9 +303,38 @@ public class GUI extends JFrame {
 		gbc_lblKaakaoMaara.gridy = 5;
 		contentPane.add(lblKaakaoMaara, gbc_lblKaakaoMaara);
 		lblKaakaoMaara.setText("Kaakao :" + ja.getKaakao());
-		// lis‰t‰‰n if lause t‰h‰nkin jos alkuarvo on liian alhainen, vaihdetaan v‰ri
+		paivitaKaakao(ja);
+	}
+	private void paivitaKahvi(automaatti ja) {
+		// vaihdetaan n‰ytett‰v‰ raaka-aineen m‰‰r‰
+		lblKahviMaara.setText("Kahvi: " + ja.getKahvi());
+		// jos raaka-aine alhainen vaihdetaan v‰ri
+		if (ja.getKahvi() <= 20) {
+			lblKahviMaara.setForeground(Color.RED);
+		} else {
+			lblKahviMaara.setForeground(Color.BLACK);
+		}
+	}
+	
+	private void paivitaTee(automaatti ja) {
+		// vaihdetaan n‰ytett‰v‰ raaka-aineen m‰‰r‰
+		lblTeeMaara.setText("Tee: " + ja.getTee());
+		// jos raaka-aine alhainen vaihdetaan v‰ri
+		if (ja.getTee() <= 20) {
+			lblTeeMaara.setForeground(Color.RED);
+		} else {
+			lblTeeMaara.setForeground(Color.BLACK);
+		}
+	}
+
+	private void paivitaKaakao(automaatti ja) {
+		// vaihdetaan n‰ytett‰v‰ raaka-aineen m‰‰r‰
+		lblKaakaoMaara.setText("Kaakao: " + ja.getKaakao());
+		// jos raaka-aine alhainen vaihdetaan v‰ri
 		if (ja.getKaakao() <= 20) {
 			lblKaakaoMaara.setForeground(Color.RED);
+		} else {
+			lblKaakaoMaara.setForeground(Color.BLACK);
 		}
 	}
 }
