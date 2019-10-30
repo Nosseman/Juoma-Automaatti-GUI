@@ -43,7 +43,7 @@ public class automaatti {
 	}
 	
 	// luodaan metodit juomien valmistamiselle
-	//j‰tet‰‰n systemoutprintit jotta voidaan tarkistaa metodien toiminta
+	// j‰tet‰‰n systemoutprintit jotta voidaan tarkistaa metodien toiminta
 	public void valmistaKahvi() {
 		if (kahvi < 10) {
 			this.kahvi = 0; // jotta raaka-aineen m‰‰r‰ ei mene alle 0
